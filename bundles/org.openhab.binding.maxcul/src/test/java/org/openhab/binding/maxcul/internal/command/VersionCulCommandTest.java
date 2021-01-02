@@ -21,20 +21,19 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoSettings;
 import org.openhab.binding.maxcul.internal.bridge.MaxCulTransceiver;
 import org.openhab.binding.maxcul.internal.test.SchedulerMockProvider;
 
 /**
  * @author Sascha Volkenandt - Initial contribution
  */
-@RunWith(MockitoJUnitRunner.class)
-public class VersionCulCommandTest {
+@MockitoSettings
+class VersionCulCommandTest {
 
     private final SchedulerMockProvider schedulerMockProvider = new SchedulerMockProvider();
 
@@ -46,13 +45,13 @@ public class VersionCulCommandTest {
 
     private VersionCulCommand commandUnderTest;
 
-    @Before
-    public void before() {
+    @BeforeEach
+    void beforeEach() {
         commandUnderTest = new VersionCulCommand(transceiverMock, schedulerMock);
     }
 
     @Test
-    public void nanoCUL868_ok() {
+    void nanoCUL868_ok() {
         commandUnderTest.start();
         boolean result = commandUnderTest.receive("V 1.67 nanoCUL868");
 
@@ -65,7 +64,7 @@ public class VersionCulCommandTest {
     }
 
     @Test
-    public void aculfw_ok() {
+    void aculfw_ok() {
         commandUnderTest.start();
         boolean result = commandUnderTest.receive("V 1.23.0 a-culfw Build: 123 (2019-11-06) ");
 
@@ -78,7 +77,7 @@ public class VersionCulCommandTest {
     }
 
     @Test
-    public void unknown_notOk() {
+    void unknown_notOk() {
         commandUnderTest.start();
         boolean result = commandUnderTest.receive("nonsense");
 
@@ -90,7 +89,7 @@ public class VersionCulCommandTest {
     }
 
     @Test
-    public void cancel() {
+    void cancel() {
         commandUnderTest.start();
         commandUnderTest.cancel();
 
@@ -101,7 +100,7 @@ public class VersionCulCommandTest {
     }
 
     @Test
-    public void timeout_retryOk() {
+    void timeout_retryOk() {
         commandUnderTest.start();
         schedulerMockProvider.invoke();
         boolean result = commandUnderTest.receive("V 1.67 nanoCUL868");
@@ -116,7 +115,7 @@ public class VersionCulCommandTest {
     }
 
     @Test
-    public void timeout_failsAfterThreeTries() {
+    void timeout_failsAfterThreeTries() {
         commandUnderTest.start();
         schedulerMockProvider.invoke();
         schedulerMockProvider.invoke();

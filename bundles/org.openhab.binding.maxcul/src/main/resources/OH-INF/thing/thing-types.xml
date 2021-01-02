@@ -51,7 +51,7 @@
 			<parameter name="virtualShutterContactAddress" type="text" required="false" groupName="device">
 				<label>Virtual Shutter RF address</label>
 				<description>The RF address of the Virtual Shutter Contact (clear to disable Virtual Shutter Contact).</description>
-				<default>111111</default>
+				<default>222222</default>
 			</parameter>
 
 		</config-description>

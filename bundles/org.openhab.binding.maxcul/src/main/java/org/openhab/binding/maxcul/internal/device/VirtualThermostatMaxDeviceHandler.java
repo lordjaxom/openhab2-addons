@@ -12,7 +12,6 @@
  */
 package org.openhab.binding.maxcul.internal.device;
 
-import static org.eclipse.smarthome.core.library.unit.SIUnits.CELSIUS;
 import static org.openhab.binding.maxcul.internal.MaxCulBindingConstants.CHANNEL_ID_MEASURED_TEMP;
 import static org.openhab.binding.maxcul.internal.MaxCulBindingConstants.CHANNEL_ID_SET_TEMP;
 import static org.openhab.binding.maxcul.internal.utils.Checks.requireNonNull;
@@ -24,19 +23,20 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.smarthome.core.library.types.QuantityType;
-import org.eclipse.smarthome.core.storage.Storage;
-import org.eclipse.smarthome.core.thing.ChannelUID;
-import org.eclipse.smarthome.core.thing.Thing;
-import org.eclipse.smarthome.core.thing.ThingStatus;
-import org.eclipse.smarthome.core.thing.ThingStatusDetail;
-import org.eclipse.smarthome.core.thing.ThingStatusInfo;
-import org.eclipse.smarthome.core.thing.binding.BaseThingHandler;
-import org.eclipse.smarthome.core.types.Command;
-import org.eclipse.smarthome.core.types.RefreshType;
 import org.openhab.binding.maxcul.internal.bridge.MaxCulBridgeHandler;
 import org.openhab.binding.maxcul.internal.message.MoritzMessage;
 import org.openhab.binding.maxcul.internal.utils.Types;
+import org.openhab.core.library.types.QuantityType;
+import org.openhab.core.library.unit.SIUnits;
+import org.openhab.core.storage.Storage;
+import org.openhab.core.thing.ChannelUID;
+import org.openhab.core.thing.Thing;
+import org.openhab.core.thing.ThingStatus;
+import org.openhab.core.thing.ThingStatusDetail;
+import org.openhab.core.thing.ThingStatusInfo;
+import org.openhab.core.thing.binding.BaseThingHandler;
+import org.openhab.core.types.Command;
+import org.openhab.core.types.RefreshType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -126,9 +126,9 @@ public class VirtualThermostatMaxDeviceHandler extends BaseThingHandler implemen
         String id = channelUID.getId();
         if (command instanceof RefreshType) {
             if (CHANNEL_ID_MEASURED_TEMP.equals(id)) {
-                updateState(CHANNEL_ID_MEASURED_TEMP, new QuantityType<>(state.measuredTemp, CELSIUS));
+                updateState(CHANNEL_ID_MEASURED_TEMP, new QuantityType<>(state.measuredTemp, SIUnits.CELSIUS));
             } else if (CHANNEL_ID_SET_TEMP.equals(id)) {
-                updateState(CHANNEL_ID_SET_TEMP, new QuantityType<>(state.setTemp, CELSIUS));
+                updateState(CHANNEL_ID_SET_TEMP, new QuantityType<>(state.setTemp, SIUnits.CELSIUS));
             }
             return;
         }
@@ -169,7 +169,7 @@ public class VirtualThermostatMaxDeviceHandler extends BaseThingHandler implemen
 
     private synchronized void handleMeasuredTempCommand(Command command) {
         if (command instanceof RefreshType) {
-            updateState(CHANNEL_ID_MEASURED_TEMP, new QuantityType<>(state.measuredTemp, CELSIUS));
+            updateState(CHANNEL_ID_MEASURED_TEMP, new QuantityType<>(state.measuredTemp, SIUnits.CELSIUS));
             return;
         }
 
@@ -187,7 +187,7 @@ public class VirtualThermostatMaxDeviceHandler extends BaseThingHandler implemen
 
     private void handleSetTemperature(Command command) {
         if (command instanceof RefreshType) {
-            updateState(CHANNEL_ID_SET_TEMP, new QuantityType<>(state.setTemp, CELSIUS));
+            updateState(CHANNEL_ID_SET_TEMP, new QuantityType<>(state.setTemp, SIUnits.CELSIUS));
             return;
         }
 

@@ -13,7 +13,11 @@
 package org.openhab.binding.maxcul.internal.command;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.openhab.binding.maxcul.internal.message.AbstractMoritzMessage.lastMessageId;
@@ -22,13 +26,12 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoSettings;
 import org.openhab.binding.maxcul.internal.bridge.MaxCulTransceiver;
 import org.openhab.binding.maxcul.internal.message.AbstractMoritzMessage;
 import org.openhab.binding.maxcul.internal.message.MoritzMessage;
@@ -38,8 +41,8 @@ import org.openhab.binding.maxcul.internal.test.SchedulerMockProvider;
 /**
  * @author Sascha Volkenandt - Initial contribution
  */
-@RunWith(MockitoJUnitRunner.class)
-public class MoritzCulCommandTest {
+@MockitoSettings
+class MoritzCulCommandTest {
 
     private static final String SOURCE = "ababab";
     private static final String DEST = "cdcdcd";
@@ -58,13 +61,13 @@ public class MoritzCulCommandTest {
 
     private MoritzCulCommand commandUnderTest;
 
-    @Before
-    public void before() {
+    @BeforeEach
+    void beforeEach() {
         commandUnderTest = new MoritzCulCommand(transceiverMock, schedulerMock, messageMock);
     }
 
     @Test
-    public void ok() {
+    void ok() {
         commandUnderTest.start();
         boolean creditResult = commandUnderTest.receive("21 900");
         boolean ackResult = commandUnderTest
@@ -81,7 +84,7 @@ public class MoritzCulCommandTest {
     }
 
     @Test
-    public void cancel_afterStart() {
+    void cancel_afterStart() {
         commandUnderTest.start();
         commandUnderTest.cancel();
 
@@ -92,7 +95,7 @@ public class MoritzCulCommandTest {
     }
 
     @Test
-    public void cancel_afterCredit() {
+    void cancel_afterCredit() {
         commandUnderTest.start();
         commandUnderTest.receive("21 900");
         commandUnderTest.cancel();
@@ -105,7 +108,7 @@ public class MoritzCulCommandTest {
     }
 
     @Test
-    public void creditTimeout_retryOk() {
+    void creditTimeout_retryOk() {
         commandUnderTest.start();
         schedulerMockProvider.invoke();
         commandUnderTest.start();
@@ -126,7 +129,7 @@ public class MoritzCulCommandTest {
     }
 
     @Test
-    public void ackTimeout_retryOk() {
+    void ackTimeout_retryOk() {
         commandUnderTest.start();
         boolean creditResult = commandUnderTest.receive("21 900");
         schedulerMockProvider.invoke();
@@ -150,7 +153,7 @@ public class MoritzCulCommandTest {
     }
 
     @Test
-    public void ackTimeout_failsAfterTenTries() {
+    void ackTimeout_failsAfterTenTries() {
         for (int i = 0; i < 10; i++) {
             commandUnderTest.start();
             commandUnderTest.receive("21 900");
@@ -170,7 +173,7 @@ public class MoritzCulCommandTest {
     }
 
     @Test
-    public void insufficientCredits_waitTime() {
+    void insufficientCredits_waitTime() {
         commandUnderTest.start();
         boolean creditResult = commandUnderTest.receive("21 97");
         schedulerMockProvider.invoke();

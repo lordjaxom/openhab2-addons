@@ -22,7 +22,6 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.smarthome.io.transport.serial.*;
 import org.openhab.binding.maxcul.internal.command.CulCommand;
 import org.openhab.binding.maxcul.internal.command.CulCommandQueue;
 import org.openhab.binding.maxcul.internal.command.MoritzCulCommand;
@@ -31,6 +30,12 @@ import org.openhab.binding.maxcul.internal.device.HeatingThermostatDeviceHandler
 import org.openhab.binding.maxcul.internal.device.MaxDeviceHandler;
 import org.openhab.binding.maxcul.internal.device.ThermostatMode;
 import org.openhab.binding.maxcul.internal.message.*;
+import org.openhab.core.io.transport.serial.PortInUseException;
+import org.openhab.core.io.transport.serial.SerialPort;
+import org.openhab.core.io.transport.serial.SerialPortEvent;
+import org.openhab.core.io.transport.serial.SerialPortIdentifier;
+import org.openhab.core.io.transport.serial.SerialPortManager;
+import org.openhab.core.io.transport.serial.UnsupportedCommOperationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

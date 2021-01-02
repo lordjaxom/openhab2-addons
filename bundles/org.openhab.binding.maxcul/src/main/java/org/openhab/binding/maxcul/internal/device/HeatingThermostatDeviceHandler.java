@@ -12,7 +12,6 @@
  */
 package org.openhab.binding.maxcul.internal.device;
 
-import static org.eclipse.smarthome.core.library.unit.SIUnits.CELSIUS;
 import static org.openhab.binding.maxcul.internal.MaxCulBindingConstants.CHANNEL_ID_ACTUAL_TEMP;
 import static org.openhab.binding.maxcul.internal.MaxCulBindingConstants.CHANNEL_ID_BATTERY_LOW;
 import static org.openhab.binding.maxcul.internal.MaxCulBindingConstants.CHANNEL_ID_LOCKED;
@@ -25,19 +24,6 @@ import static org.openhab.binding.maxcul.internal.utils.Checks.requireNonNull;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.smarthome.core.library.types.DecimalType;
-import org.eclipse.smarthome.core.library.types.OnOffType;
-import org.eclipse.smarthome.core.library.types.OpenClosedType;
-import org.eclipse.smarthome.core.library.types.QuantityType;
-import org.eclipse.smarthome.core.library.types.StringType;
-import org.eclipse.smarthome.core.storage.Storage;
-import org.eclipse.smarthome.core.thing.ChannelUID;
-import org.eclipse.smarthome.core.thing.Thing;
-import org.eclipse.smarthome.core.thing.ThingStatus;
-import org.eclipse.smarthome.core.thing.ThingStatusDetail;
-import org.eclipse.smarthome.core.thing.binding.BaseThingHandler;
-import org.eclipse.smarthome.core.types.Command;
-import org.eclipse.smarthome.core.types.RefreshType;
 import org.openhab.binding.maxcul.internal.bridge.MaxCulBridgeHandler;
 import org.openhab.binding.maxcul.internal.message.AckMoritzMessage;
 import org.openhab.binding.maxcul.internal.message.MoritzMessage;
@@ -45,6 +31,20 @@ import org.openhab.binding.maxcul.internal.message.SetTemperatureMoritzMessage;
 import org.openhab.binding.maxcul.internal.message.ThermostatSettings;
 import org.openhab.binding.maxcul.internal.message.ThermostatStateMoritzMessage;
 import org.openhab.binding.maxcul.internal.utils.Types;
+import org.openhab.core.library.types.DecimalType;
+import org.openhab.core.library.types.OnOffType;
+import org.openhab.core.library.types.OpenClosedType;
+import org.openhab.core.library.types.QuantityType;
+import org.openhab.core.library.types.StringType;
+import org.openhab.core.library.unit.SIUnits;
+import org.openhab.core.storage.Storage;
+import org.openhab.core.thing.ChannelUID;
+import org.openhab.core.thing.Thing;
+import org.openhab.core.thing.ThingStatus;
+import org.openhab.core.thing.ThingStatusDetail;
+import org.openhab.core.thing.binding.BaseThingHandler;
+import org.openhab.core.types.Command;
+import org.openhab.core.types.RefreshType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -122,9 +122,9 @@ public class HeatingThermostatDeviceHandler extends BaseThingHandler implements 
             if (CHANNEL_ID_MODE.equals(id)) {
                 updateState(CHANNEL_ID_MODE, new StringType(state.mode.name()));
             } else if (CHANNEL_ID_SET_TEMP.equals(id)) {
-                updateState(CHANNEL_ID_SET_TEMP, new QuantityType<>(state.setTemp, CELSIUS));
+                updateState(CHANNEL_ID_SET_TEMP, new QuantityType<>(state.setTemp, SIUnits.CELSIUS));
             } else if (CHANNEL_ID_ACTUAL_TEMP.equals(id)) {
-                updateState(CHANNEL_ID_ACTUAL_TEMP, new QuantityType<>(state.actualTemp, CELSIUS));
+                updateState(CHANNEL_ID_ACTUAL_TEMP, new QuantityType<>(state.actualTemp, SIUnits.CELSIUS));
             } else if (CHANNEL_ID_VALVE.equals(id)) {
                 updateState(CHANNEL_ID_VALVE, new DecimalType(state.valve));
             } else if (CHANNEL_ID_BATTERY_LOW.equals(id)) {
@@ -202,7 +202,7 @@ public class HeatingThermostatDeviceHandler extends BaseThingHandler implements 
         updateState(CHANNEL_ID_VALVE, new DecimalType(state.valve));
         updateState(CHANNEL_ID_BATTERY_LOW, OnOffType.from(state.batteryLow));
         updateState(CHANNEL_ID_MODE, new StringType(state.mode.name()));
-        updateState(CHANNEL_ID_SET_TEMP, new QuantityType<>(state.setTemp, CELSIUS));
+        updateState(CHANNEL_ID_SET_TEMP, new QuantityType<>(state.setTemp, SIUnits.CELSIUS));
         updateState(CHANNEL_ID_RF_ERROR, OnOffType.from(state.rfError));
         updateState(CHANNEL_ID_LOCKED, state.locked ? OpenClosedType.CLOSED : OpenClosedType.OPEN);
     }
@@ -213,7 +213,7 @@ public class HeatingThermostatDeviceHandler extends BaseThingHandler implements 
         state.actualTemp = actualTemp;
         saveToStorage();
 
-        updateState(CHANNEL_ID_ACTUAL_TEMP, new QuantityType<>(state.actualTemp, CELSIUS));
+        updateState(CHANNEL_ID_ACTUAL_TEMP, new QuantityType<>(state.actualTemp, SIUnits.CELSIUS));
     }
 
     private void loadFromStorage() {

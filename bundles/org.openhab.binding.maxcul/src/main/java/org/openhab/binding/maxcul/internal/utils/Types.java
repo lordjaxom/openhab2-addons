@@ -20,15 +20,15 @@ import java.util.Optional;
 import java.util.OptionalDouble;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.smarthome.core.library.types.OnOffType;
-import org.eclipse.smarthome.core.library.types.QuantityType;
-import org.eclipse.smarthome.core.library.types.StringType;
-import org.eclipse.smarthome.core.library.unit.SIUnits;
-import org.eclipse.smarthome.core.types.Command;
 import org.openhab.binding.maxcul.internal.device.ThermostatMode;
+import org.openhab.core.library.types.OnOffType;
+import org.openhab.core.library.types.QuantityType;
+import org.openhab.core.library.types.StringType;
+import org.openhab.core.library.unit.SIUnits;
+import org.openhab.core.types.Command;
 
 /**
- * The {@link Types} class provides common {@link org.eclipse.smarthome.core.types.Type} conversions.
+ * The {@link Types} class provides common {@link org.openhab.core.types.Type} conversions.
  *
  * @author Sascha Volkenandt - Initial contribution
  */
