@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="maxcul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+
+	<bridge-type id="bridge">
+		<label>MAX!CUL</label>
+		<description>This bridge represents the MAX!CUL</description>
+
+		<config-description>
+			<parameter-group name="identification">
+				<label>Identification</label>
+				<description>Hardware &amp; location identification</description>
+				<advanced>false</advanced>
+			</parameter-group>
+			<parameter-group name="connection">
+				<label>Connection</label>
+				<description>Connection settings</description>
+				<advanced>false</advanced>
+			</parameter-group>
+			<parameter-group name="device">
+				<label>Device Settings</label>
+				<description>Device parameter settings</description>
+				<advanced>true</advanced>
+			</parameter-group>
+
+			<parameter name="port" type="text" required="true" groupName="connection">
+				<label>MAX!CUL serial port</label>
+				<context>serial-port</context>
+				<description>The serial port of the MAX!CUL gateway.</description>
+			</parameter>
+			<parameter name="baudRate" type="integer" required="true" groupName="connection">
+				<label>Serial port baud rate</label>
+				<context>serial-port</context>
+				<description>The baud rate of the serial port.</description>
+				<default>38400</default>
+			</parameter>
+
+			<parameter name="address" type="text" required="true" groupName="identification">
+				<label>CUL RF address</label>
+				<description>The RF address of the MAX!CUL (must not be used by any other MAX! device).</description>
+				<default>123456</default>
+			</parameter>
+
+			<parameter name="virtualThermostatAddress" type="text" required="false" groupName="device">
+				<label>Virtual Thermostat RF address</label>
+				<description>The RF address of the Virtual Thermostat (clear to disable Virtual Thermostat).</description>
+				<default>111111</default>
+			</parameter>
+			<parameter name="virtualShutterContactAddress" type="text" required="false" groupName="device">
+				<label>Virtual Shutter RF address</label>
+				<description>The RF address of the Virtual Shutter Contact (clear to disable Virtual Shutter Contact).</description>
+				<default>111111</default>
+			</parameter>
+
+		</config-description>
+	</bridge-type>
+
+	<thing-type id="heatingThermostat">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="bridge"/>
+		</supported-bridge-type-refs>
+
+		<label>MAX! HeatingThermostat</label>
+		<description>This is a MAX! HeatingThermostat</description>
+
+		<channels>
+			<channel id="valve" typeId="valve"/>
+			<channel id="batteryLow" typeId="system.low-battery"/>
+			<channel id="mode" typeId="mode"/>
+			<channel id="actualTemp" typeId="actualTemp"/>
+			<channel id="setTemp" typeId="setTemp"/>
+			<channel id="locked" typeId="locked"/>
+			<channel id="rfError" typeId="rfError"/>
+		</channels>
+
+		<config-description>
+			<parameter-group name="identification">
+				<label>Identification</label>
+				<description>Hardware &amp; location identification</description>
+				<advanced>false</advanced>
+			</parameter-group>
+			<parameter-group name="device">
+				<label>Device Settings</label>
+				<description>Device parameter settings</description>
+				<advanced>true</advanced>
+			</parameter-group>
+
+			<parameter name="address" type="text" required="true" groupName="identification">
+				<label>RF Address</label>
+				<description>The RF address of the device.</description>
+			</parameter>
+
+			<parameter name="roomName" type="text" required="false" groupName="device">
+				<label>Room</label>
+				<description>The room name is used for linking devices that are in the same room.</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+	<thing-type id="virtualThermostat">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="bridge"/>
+		</supported-bridge-type-refs>
+
+		<label>Virtual MAX! WallMountedThermostat</label>
+		<description>This is a virtual MAX! WallMountedThermostat</description>
+
+		<channels>
+			<channel id="measuredTemp" typeId="measuredTemp"/>
+			<channel id="setTemp" typeId="setTemp"/>
+		</channels>
+
+		<config-description>
+			<parameter-group name="device">
+				<label>Device Settings</label>
+				<description>Device parameter settings</description>
+				<advanced>true</advanced>
+			</parameter-group>
+
+			<parameter name="roomName" type="text" required="true" groupName="device">
+				<label>Room</label>
+				<description>The room name is used for linking devices that are in the same room.</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+	<channel-type id="valve" advanced="true">
+		<item-type>Number</item-type>
+		<label>Valve Position</label>
+		<description>Thermostat Valve Position</description>
+		<state pattern="%d %%" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="mode">
+		<item-type>String</item-type>
+		<label>Mode</label>
+		<description>Thermostat Mode Setting</description>
+		<tags>
+			<tag>heating</tag>
+		</tags>
+		<state pattern="%s">
+			<options>
+				<option value="AUTOMATIC">AUTOMATIC</option>
+				<option value="MANUAL">MANUAL</option>
+				<option value="BOOST">BOOST</option>
+				<option value="VACATION">VACATION</option>
+			</options>
+		</state>
+	</channel-type>
+
+	<channel-type id="actualTemp">
+		<item-type>Number:Temperature</item-type>
+		<label>Current Temperature</label>
+		<description>Current measured room temperature</description>
+		<category>Temperature</category>
+		<tags>
+			<tag>heating</tag>
+		</tags>
+		<state pattern="%.1f %unit%" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="measuredTemp">
+		<item-type>Number:Temperature</item-type>
+		<label>Current Temperature</label>
+		<description>Current measured room temperature</description>
+		<category>Temperature</category>
+		<tags>
+			<tag>heating</tag>
+		</tags>
+		<state pattern="%.1f %unit%"/>
+	</channel-type>
+
+	<channel-type id="setTemp">
+		<item-type>Number:Temperature</item-type>
+		<label>Setpoint Temperature</label>
+		<description>Thermostat Setpoint temperature</description>
+		<category>Temperature</category>
+		<tags>
+			<tag>heating</tag>
+		</tags>
+		<state pattern="%.1f %unit%"/>
+	</channel-type>
+
+	<channel-type id="locked" advanced="true">
+		<item-type>Contact</item-type>
+		<label>Thermostat Locked</label>
+		<description>Thermostat is locked for adjustments</description>
+		<category>Lock</category>
+		<state pattern="%s" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="rfError">
+		<item-type>Switch</item-type>
+		<label>RF Error</label>
+		<description>Transmission error between wall mounted thermostat and heating thermostat</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+</thing:thing-descriptions>

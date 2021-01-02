@@ -126,6 +126,7 @@
 /bundles/org.openhab.binding.magentatv/ @markus7017
 /bundles/org.openhab.binding.mail/ @J-N-K
 /bundles/org.openhab.binding.max/ @marcelrv
+/bundles/org.openhab.binding.maxcul/ @lordjaxom
 /bundles/org.openhab.binding.mcp23017/ @aogorek
 /bundles/org.openhab.binding.melcloud/ @lucacalcaterra @paulianttila @thewiep
 /bundles/org.openhab.binding.meteoalerte/ @clinique
