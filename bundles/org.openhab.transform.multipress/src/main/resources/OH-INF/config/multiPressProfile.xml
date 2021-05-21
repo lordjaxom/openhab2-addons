@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config-description:config-descriptions
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:config-description="https://openhab.org/schemas/config-description/v1.0.0"
+	xsi:schemaLocation="https://openhab.org/schemas/config-description/v1.0.0 https://openhab.org/schemas/config-description-1.0.0.xsd">
+
+	<config-description uri="profile:multiPress:multiPress">
+		<parameter name="on" type="text" required="false">
+			<label>ON value</label>
+			<description>Value describing the ON state of the button.</description>
+			<default>ON</default>
+		</parameter>
+		<parameter name="on" type="text" required="false">
+			<label>OFF value</label>
+			<description>Value describing the OFF state of the button.</description>
+			<default>OFF</default>
+		</parameter>
+		<parameter name="longDelay" type="integer" required="false">
+			<label>Long press delay</label>
+			<description>The time in ms the button has to be held to recognize a long press.</description>
+			<default>1000</default>
+		</parameter>
+		<parameter name="shortDelay" type="integer" required="false">
+			<label>Short press delay</label>
+			<description>The time that may pass between two consecutive short clicks to be recognized as a multi press.</description>
+			<default>200</default>
+		</parameter>
+	</config-description>
+</config-description:config-descriptions>

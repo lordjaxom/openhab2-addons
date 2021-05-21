@@ -341,6 +341,7 @@
 /bundles/org.openhab.transform.jinja/ @jochen314
 /bundles/org.openhab.transform.jsonpath/ @clinique
 /bundles/org.openhab.transform.map/ @openhab/add-ons-maintainers
+/bundles/org.openhab.transform.multipress/ @lordjaxom
 /bundles/org.openhab.transform.regex/ @openhab/add-ons-maintainers
 /bundles/org.openhab.transform.scale/ @clinique
 /bundles/org.openhab.transform.xpath/ @openhab/add-ons-maintainers
